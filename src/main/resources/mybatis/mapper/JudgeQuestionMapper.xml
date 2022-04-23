@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suse.demo.mapper.JudgeQuestionMapper">
+  <resultMap id="BaseResultMap" type="com.suse.demo.entity.JudgeQuestion">
+    <id column="judge_id" jdbcType="INTEGER" property="judgeId" />
+    <result column="judge_subject" jdbcType="VARCHAR" property="judgeSubject" />
+    <result column="judge_level" jdbcType="VARCHAR" property="judgeLevel" />
+    <result column="judge_question" jdbcType="VARCHAR" property="judgeQuestion" />
+    <result column="judge_answer" jdbcType="VARCHAR" property="judgeAnswer" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    judge_id, judge_subject, judge_level, judge_question, judge_answer
+  </sql>
+  <select id="selectByExample" parameterType="com.suse.demo.entity.JudgeQuestionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from judge_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from judge_question
+    where judge_id = #{judgeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from judge_question
+    where judge_id = #{judgeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.suse.demo.entity.JudgeQuestionExample">
+    delete from judge_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.suse.demo.entity.JudgeQuestion">
+    insert into judge_question (judge_id, judge_subject, judge_level, 
+      judge_question, judge_answer)
+    values (#{judgeId,jdbcType=INTEGER}, #{judgeSubject,jdbcType=VARCHAR}, #{judgeLevel,jdbcType=VARCHAR}, 
+      #{judgeQuestion,jdbcType=VARCHAR}, #{judgeAnswer,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suse.demo.entity.JudgeQuestion">
+    insert into judge_question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="judgeId != null">
+        judge_id,
+      </if>
+      <if test="judgeSubject != null">
+        judge_subject,
+      </if>
+      <if test="judgeLevel != null">
+        judge_level,
+      </if>
+      <if test="judgeQuestion != null">
+        judge_question,
+      </if>
+      <if test="judgeAnswer != null">
+        judge_answer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="judgeId != null">
+        #{judgeId,jdbcType=INTEGER},
+      </if>
+      <if test="judgeSubject != null">
+        #{judgeSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeLevel != null">
+        #{judgeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeQuestion != null">
+        #{judgeQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeAnswer != null">
+        #{judgeAnswer,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.suse.demo.entity.JudgeQuestionExample" resultType="java.lang.Long">
+    select count(*) from judge_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update judge_question
+    <set>
+      <if test="record.judgeId != null">
+        judge_id = #{record.judgeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.judgeSubject != null">
+        judge_subject = #{record.judgeSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.judgeLevel != null">
+        judge_level = #{record.judgeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.judgeQuestion != null">
+        judge_question = #{record.judgeQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.judgeAnswer != null">
+        judge_answer = #{record.judgeAnswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update judge_question
+    set judge_id = #{record.judgeId,jdbcType=INTEGER},
+      judge_subject = #{record.judgeSubject,jdbcType=VARCHAR},
+      judge_level = #{record.judgeLevel,jdbcType=VARCHAR},
+      judge_question = #{record.judgeQuestion,jdbcType=VARCHAR},
+      judge_answer = #{record.judgeAnswer,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suse.demo.entity.JudgeQuestion">
+    update judge_question
+    <set>
+      <if test="judgeSubject != null">
+        judge_subject = #{judgeSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeLevel != null">
+        judge_level = #{judgeLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeQuestion != null">
+        judge_question = #{judgeQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeAnswer != null">
+        judge_answer = #{judgeAnswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where judge_id = #{judgeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suse.demo.entity.JudgeQuestion">
+    update judge_question
+    set judge_subject = #{judgeSubject,jdbcType=VARCHAR},
+      judge_level = #{judgeLevel,jdbcType=VARCHAR},
+      judge_question = #{judgeQuestion,jdbcType=VARCHAR},
+      judge_answer = #{judgeAnswer,jdbcType=VARCHAR}
+    where judge_id = #{judgeId,jdbcType=INTEGER}
+  </update>
+</mapper>

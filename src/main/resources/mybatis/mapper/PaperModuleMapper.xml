@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suse.demo.mapper.PaperModuleMapper">
+  <resultMap id="BaseResultMap" type="com.suse.demo.entity.PaperModule">
+    <id column="module_id" jdbcType="INTEGER" property="moduleId" />
+    <result column="module_type" jdbcType="VARCHAR" property="moduleType" />
+    <result column="module_number" jdbcType="INTEGER" property="moduleNumber" />
+    <result column="module_score" jdbcType="INTEGER" property="moduleScore" />
+    <result column="module_subject" jdbcType="VARCHAR" property="moduleSubject" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    module_id, module_type, module_number, module_score, module_subject
+  </sql>
+  <select id="selectByExample" parameterType="com.suse.demo.entity.PaperModuleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from paper_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from paper_module
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from paper_module
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.suse.demo.entity.PaperModuleExample">
+    delete from paper_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.suse.demo.entity.PaperModule">
+    insert into paper_module (module_id, module_type, module_number, 
+      module_score, module_subject)
+    values (#{moduleId,jdbcType=INTEGER}, #{moduleType,jdbcType=VARCHAR}, #{moduleNumber,jdbcType=INTEGER}, 
+      #{moduleScore,jdbcType=INTEGER}, #{moduleSubject,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suse.demo.entity.PaperModule">
+    insert into paper_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="moduleType != null">
+        module_type,
+      </if>
+      <if test="moduleNumber != null">
+        module_number,
+      </if>
+      <if test="moduleScore != null">
+        module_score,
+      </if>
+      <if test="moduleSubject != null">
+        module_subject,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleType != null">
+        #{moduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleNumber != null">
+        #{moduleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="moduleScore != null">
+        #{moduleScore,jdbcType=INTEGER},
+      </if>
+      <if test="moduleSubject != null">
+        #{moduleSubject,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.suse.demo.entity.PaperModuleExample" resultType="java.lang.Long">
+    select count(*) from paper_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update paper_module
+    <set>
+      <if test="record.moduleId != null">
+        module_id = #{record.moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.moduleType != null">
+        module_type = #{record.moduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moduleNumber != null">
+        module_number = #{record.moduleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.moduleScore != null">
+        module_score = #{record.moduleScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.moduleSubject != null">
+        module_subject = #{record.moduleSubject,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update paper_module
+    set module_id = #{record.moduleId,jdbcType=INTEGER},
+      module_type = #{record.moduleType,jdbcType=VARCHAR},
+      module_number = #{record.moduleNumber,jdbcType=INTEGER},
+      module_score = #{record.moduleScore,jdbcType=INTEGER},
+      module_subject = #{record.moduleSubject,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suse.demo.entity.PaperModule">
+    update paper_module
+    <set>
+      <if test="moduleType != null">
+        module_type = #{moduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleNumber != null">
+        module_number = #{moduleNumber,jdbcType=INTEGER},
+      </if>
+      <if test="moduleScore != null">
+        module_score = #{moduleScore,jdbcType=INTEGER},
+      </if>
+      <if test="moduleSubject != null">
+        module_subject = #{moduleSubject,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suse.demo.entity.PaperModule">
+    update paper_module
+    set module_type = #{moduleType,jdbcType=VARCHAR},
+      module_number = #{moduleNumber,jdbcType=INTEGER},
+      module_score = #{moduleScore,jdbcType=INTEGER},
+      module_subject = #{moduleSubject,jdbcType=VARCHAR}
+    where module_id = #{moduleId,jdbcType=INTEGER}
+  </update>
+</mapper>

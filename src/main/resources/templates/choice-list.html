@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>在线考试后台管理系统</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <script src="assets/js/echarts.min.js"></script>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script>
+
+    <script src="layer/layer.js"></script>
+
+
+    <!-- 引入bootstrap -->
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+
+<body data-type="widgets">
+    <script src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <header>
+            <!-- logo -->
+            <div class="am-fl tpl-header-logo "  style="color: gray"  >
+                <br>
+                在线考试后台管理
+            </div>
+            <!-- 右侧内容 -->
+            <div class="tpl-header-fluid">
+                <!-- 侧边切换 -->
+                <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+
+                    </span>
+                </div>
+                <div class="am-fr tpl-header-navbar">
+                    <ul>
+                        <li class="am-text-sm tpl-header-navbar-welcome">
+                            <a href="javascript:;">欢迎你,<span th:text="${session.admin.getUsername()}"></span> </a>
+                        </li>
+
+                        <li class="am-text-sm">
+                            <a href="/logout">
+                                <span class="am-icon-sign-out"></span> 退出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </header>
+        <!-- 风格切换 -->
+        <div class="tpl-skiner">
+            <div class="tpl-skiner-toggle am-icon-cog">
+            </div>
+            <div class="tpl-skiner-content">
+                <div class="tpl-skiner-content-title">
+                    选择主题
+                </div>
+                <div class="tpl-skiner-content-bar">
+                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
+                </div>
+            </div>
+        </div>
+        <!-- 侧边导航栏 -->
+        <div class="left-sidebar">
+            <!-- 菜单 -->
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-link">
+                    <a href="/stuList" >
+                        <i class="am-icon-user sidebar-nav-link-logo"></i> 学生管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/teacherList">
+                        <i class="am-icon-users sidebar-nav-link-logo"></i> 教师管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/classesList">
+                        <i class="am-icon-home sidebar-nav-link-logo"></i> 班级管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/subjectList">
+                        <i class="am-icon-book sidebar-nav-link-logo"></i> 学科管理
+
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="javascript:;" class="sidebar-nav-sub-title">
+                        <i class="am-icon-wpforms sidebar-nav-link-logo" ></i> 试题管理
+                        <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico"></span>
+                    </a>
+                    <ul class="sidebar-nav sidebar-nav-sub">
+                        <li class="sidebar-nav-link">
+                            <a href="/choiceList" class="active">
+                                <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 选择题列表
+                            </a>
+                        </li>
+
+                        <li class="sidebar-nav-link">
+                            <a href="/judgeList">
+                                <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 判断题列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/paperList">
+                        <i class="am-icon-columns sidebar-nav-link-logo"></i> 试卷管理
+
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/examList">
+                        <i class="am-icon-inbox sidebar-nav-link-logo"></i> 考试信息
+
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="/scoreList">
+                        <i class="am-icon-search sidebar-nav-link-logo"></i> 成绩管理
+
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">选择题列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="/toChoiceAdd" class="am-btn am-btn-default am-btn-success">
+                                                    <span class="am-icon-plus"></span>
+                                                    新增
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="widget-body  widget-body-lg am-fr">
+
+                                    <table width="100%" class="am-table am-table-compact am-table-bordered tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>题目序号</th>
+                                                <th>所属学科</th>
+                                                <th>题目难度</th>
+                                                <th>问题</th>
+                                                <th>浏览</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr : th:each="choice:${choices}">
+                                                <td th:text="${choice.cqId}"></td>
+                                                <td th:text="${choice.subjectName}"></td>
+                                                <td th:text="${choice.cqLevel}"></td>
+                                                <td th:text="${choice.cqQuestion}"></td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <button id="modal-id" th:data-whatever="${choice.getCqId()}" type="button"
+                                                            class="btn btn-primary" data-toggle="modal"
+                                                            data-target="#myModal" >
+                                                       查看
+                                                    </button>
+                                                    <!-- Modal -->
+                                                    <div class="modal" style="margin-top: 100px" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span></button>
+                                                                    <h5 class="modal-title" id="myModalLabel"> 选择题</h5>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <input id="cqQuestion" class="form-control">
+                                                                    <br>
+                                                                    <textarea id="four-text" style="height: 150px" class="form-control" ></textarea>
+                                                                    <br>
+                                                                    <input id="cqAnswer" class="form-control">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                        关闭</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation">
+                                                        <a th:href="@{/selectBychoiceId(cqId=${choice.cqId})}">
+                                                            <i class="am-icon-pencil"></i> 修改
+                                                        </a>
+                                                        <a th:href="@{/deleteBychoiceId(cqId=${choice.cqId})}" class="tpl-table-black-operation-del">
+                                                            <i class="am-icon-trash" ></i> 删除
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="am-fr">
+                                        <ul class="am-pagination tpl-pagination">
+                                            <div>
+                                                总共<label th:text="${pageMax}" ></label>页,现在位于第<label th:text="${pageNum}"></label>页
+                                            </div>
+                                            <div>
+                                                <a th:href="@{/choiceList}">首页</a>
+                                                <a th:href="@{'/choiceList?pageNum='+${pageNum - 1}}">上一页</a>
+                                                <a th:href="@{'/choiceList?pageNum='+${pageNum + 1}}">下一页</a>
+                                                <a th:href="@{'/choiceList?pageNum='+${pageMax}}">尾页</a>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/amazeui.datatables.min.js"></script>
+    <script src="assets/js/dataTables.responsive.min.js"></script>
+    <script src="assets/js/app.js"></script>
+     
+<script>
+    $('#myModal').on('show.bs.modal',function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('whatever');
+        var modal = $(this);
+        $.ajax({
+            url:"/getChoiceBycqId?cqId="+id,
+            type:"get",
+            dataType:"json",
+            success:function (data) {
+                modal.find('#cqQuestion').val(data.cqId+'.'+data.cqQuestion);
+                modal.find('#four-text').val(data.cqAchoice+'\n'+data.cqBchoice+'\n'+data.cqCchoice+'\n'+data.cqDchoice);
+                modal.find('#cqAnswer').val('答案：'+data.cqAnswer);
+            }
+        })
+    })
+</script>
+
+
+</body>
+
+</html>

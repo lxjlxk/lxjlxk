@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>在线考试系统</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <script src="assets/js/echarts.min.js"></script>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="layer/layer.js"></script>
+
+</head>
+
+<body data-type="index">
+    <script src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <header>
+            <div class="am-fl tpl-header-logo " align="center"  style="color: #1a1a1a ;position: fixed;"  >
+                倒计时
+                <div>
+                    <input th:value="${testPaper.paperTime}*60" type="hidden" id="remainingTime"></input>
+                    <input id="time" style="border: 0px;outline:none;color: red;width: 70px"   ></input>
+                </div>
+            </div>
+
+            <!-- 右侧内容 -->
+            <div class="tpl-header-fluid">
+
+                <div   style="position: fixed;background-color: white;width:100%;">
+                    <div style="margin-left: 40%">考试信息</div>
+                    <div style="margin-left: 10%">
+                        考试科目：<span th:text="${testPaper.paperSubject}"></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        考试时间：<span th:text="${testPaper.paperTime}"></span>分钟
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        考试类型：<span th:text="${testPaper.paperType}"></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        满分：<span th:text="${testPaper.paperScore}"></span>分
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                            <button type="button" id="end">
+                                <span class="am-icon-sign-out"></span> 提交试卷
+                            </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+        <!-- 风格切换 -->
+        <div class="tpl-skiner">
+            <div class="tpl-skiner-toggle am-icon-cog">
+            </div>
+            <div class="tpl-skiner-content">
+                <div class="tpl-skiner-content-title">
+                    选择主题
+                </div>
+                <div class="tpl-skiner-content-bar">
+                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
+                </div>
+            </div>
+        </div>
+        <!-- 侧边导航栏 -->
+        <div class="left-sidebar" style="position: fixed">
+            <!--选择题列表存在-->
+            <div th:if="${choiceRandomList.size()}"  style="margin-left: 10px">
+                <label>一、选择题</label><br>
+                <div style="margin-left: 20px">
+                <tr th:each="choice,choiceStat:${choiceRandomList}">
+                    <button th:text="${choiceStat.count}" th:id="'choice_show'+${choiceStat.index}"></button> &nbsp;&nbsp;&nbsp;
+                    <div th:if="${choiceStat.count} %4==0">
+                        <br>
+                    </div>
+                </tr>
+                </div>
+
+            </div>
+
+            <!--判断题列表存在-->
+            <div th:if="${judgeRandomList.size()>0}"  style="margin-left: 10px">
+                <label>二、判断题</label><br>
+                <div style="margin-left: 20px">
+                <tr th:each="judge:${judgeRandomList}">
+                    <button th:text="${judgeStat.count}" th:id="'judge_show'+${judgeStat.index}"></button>&nbsp;&nbsp;&nbsp;
+                    <div th:if="${judgeStat.count} %4==0">
+                        <br>
+                    </div>
+                </tr>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12" align="left">
+                            <div class="widget am-cf"  >
+
+                                <!--选择题列表存在-->
+                                <div th:if="${choiceRandomList.size()}"  style="margin-left: 250px">
+                                    <label>一、选择题</label><br>
+                                    <input th:value="${choiceRandomList.size()}"  id="choiceListSize" type="hidden">
+                                    <input th:value="${testPaper.paperId}"  id="testPaperId" type="hidden">
+                                    <tr th:each="choice,choiceStat:${choiceRandomList}">
+                                        <input type="hidden" th:id="'choice_answer'+${choiceStat.index}" th:value="${choice.cqAnswer}">
+                                        <td th:text="${choiceStat.count}+'.'+${choice.cqQuestion}" ></td>
+                                        <br>
+                                        <input type="radio" th:name="'choice'+${choiceStat.index}" th:value="${choice.cqAchoice}" th:text="${choice.cqAchoice}"></input>
+                                        <br>
+                                        <input type="radio" th:name="'choice'+${choiceStat.index}" th:value="${choice.cqBchoice}" th:text="${choice.cqBchoice}"></input>
+                                        <br>
+                                        <input type="radio" th:name="'choice'+${choiceStat.index}" th:value="${choice.cqCchoice}" th:text="${choice.cqCchoice}"></input>
+                                        <br>
+                                        <input type="radio" th:name="'choice'+${choiceStat.index}" th:value="${choice.cqDchoice}" th:text="${choice.cqDchoice}"></input>
+                                        <br><br>
+                                    </tr>
+
+                                </div>
+
+                                <!--判断题列表存在-->
+                                <div th:if="${judgeRandomList.size()>0}"   style="margin-left: 250px">
+                                    <label>二、判断题</label><br>
+                                    <input th:value="${judgeRandomList.size()}" id="judgeListSize" type="hidden">
+                                    <tr th:each="judge:${judgeRandomList}">
+                                        <input type="hidden" th:id="'judge_answer'+${judgeStat.index}" th:value="${judge.judgeAnswer}">
+                                        <td th:text="${judgeStat.count}+'.'+${judge.judgeQuestion}" ></td>
+                                        <br>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio"  th:name="'judge' + ${judgeStat.index}" value="对">对       &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="radio" th:name="'judge' + ${judgeStat.index}" value="错">错
+                                        <br><br>
+                                    </tr>
+                                </div>
+
+                            </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/amazeui.datatables.min.js"></script>
+    <script src="assets/js/dataTables.responsive.min.js"></script>
+    <script src="assets/js/app.js"></script>
+
+
+    <script type="text/javascript">
+        window.onload = function() {
+            daojishi();
+
+            changeColor();
+        }
+
+        var counttime =$("#remainingTime").val();//总秒数
+
+        function daojishi() {
+            if (counttime >= 0) {
+                var seconds = counttime % 60;//得到剩余的秒数  
+                var min = Math.floor(counttime / 60);//分钟
+                if (min >= 60) {
+                    var hour = Math.floor(min / 60);
+
+                    min = Math.floor((counttime - hour * 60 * 60) / 60);
+
+                    document.getElementById("time").value = hour + ":" + min + ":" + seconds ;
+                } else if (min >= 1) {
+                    document.getElementById("time").value ="00:"+ min + ":" + seconds;
+                } else {
+                    document.getElementById("time").value = "00:"+"00:"+seconds;
+                }
+
+                counttime--;
+                vartt = window.setTimeout("daojishi()", 1000);
+            } else {
+                window.clearTimeout(vartt);
+                layer.msg('考试时间结束,提交试卷！',{icon:1,time:5000},function () {
+                    tijiao();
+                })
+            }
+        }
+        function tijiao() {
+             var choiceListSize = $("#choiceListSize").val();
+             var choiceRight = 0;
+             var judgeListSize = $("#judgeListSize").val();
+             var judgeRight = 0;
+             for(var i=0; i<choiceListSize; i++){
+                 var choiceName='choice'+i;
+                 var choiceAnswer=$("#choice_answer"+i).val();
+                 var obj = $("input[name='"+choiceName + "']:checked").val();
+                 if(choiceAnswer == obj){
+                     choiceRight++;
+                 }
+
+             }
+
+            for(var i=0; i<judgeListSize; i++){
+                var judgeName='judge'+i;
+                var judgeAnswer=$("#judge_answer"+i).val();
+                var obj = $("input[name='"+judgeName + "']:checked").val();
+                if(judgeAnswer == obj){
+                    judgeRight++;
+                }
+
+            }
+
+            var testPaperId=$("#testPaperId").val();
+            window.location="/stuExamEnd?testPaperId=" + testPaperId + "&judgeRight=" + judgeRight + "&choiceRight=" + choiceRight;
+        }
+
+        function changeColor(){
+            var choiceSize = $("#choiceListSize").val();
+            for(var i=0; i<choiceSize; i++) {
+                var choiceName='choice'+i;
+                var obj = $("input[name='" + choiceName + "']:checked").val();
+                var choiceShowId = 'choice_show'+i;
+                if (obj) {
+                    document.getElementById(choiceShowId).style.background = ['#00BFFF'];
+                }
+            }
+
+
+            var judgeListSize = $("#judgeListSize").val();
+            for(var i=0; i<judgeListSize; i++){
+                var judgeName='judge'+i;
+                var obj = $("input[name='"+judgeName + "']:checked").val();
+                var judgeShowId='judge_show'+i;
+                if(obj){
+                    document.getElementById(judgeShowId).style.background = ['#00BFFF'];
+                }
+            }
+            setTimeout(arguments.callee, 1);
+        }
+
+        $("#end").click(function () {
+            tijiao();
+        })
+    </script>
+
+
+</body>
+
+</html>

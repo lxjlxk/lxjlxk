@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="MySQLTables" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--覆盖生成XML文件-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/exam_system?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+                        userId="root"
+                        password="abcd4321">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!-- 实体类-->
+        <javaModelGenerator targetPackage="com.suse.demo.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!--Mapper 就是操作数据库的SQL语句，生成的是.xml文件 （属于配置文件，放在resources下面）映射文件-->
+        <sqlMapGenerator targetPackage="mybatis.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--Dao 接口-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.suse.demo.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <table tableName="admin" domainObjectName="Admin"/>
+        <table tableName="stu" domainObjectName="Stu"/>
+        <table tableName="classes" domainObjectName="Classes"/>
+        <table tableName="teacher" domainObjectName="Teacher"/>
+
+        <table tableName="subject" domainObjectName="Subject"/>
+
+        <table tableName="choice_question" domainObjectName="ChoiceQuestion"/>
+        <table tableName="judge_question" domainObjectName="JudgeQuestion"/>
+
+        <table tableName="test_paper" domainObjectName="TestPaper"/>
+        <table tableName="paper_module" domainObjectName="PaperModule"/>
+        <table tableName="exam_list" domainObjectName="ExamList"/>
+
+        <table tableName="score_list" domainObjectName="ScoreList"/>
+
+
+
+        <!--  <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+              <property name="useActualColumnNames" value="true"/>
+              <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+              <columnOverride column="DATE_FIELD" property="startDate" />
+              <ignoreColumn column="FRED" />
+              <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+          </table>-->
+
+    </context>
+</generatorConfiguration>
